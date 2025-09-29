@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }} - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header-title">🤖 AI Models Comparison</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary btn-sm" onclick="location.reload()">
+                    🔄 Refresh
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="router.navigate('/summarization')">
+                    🚀 Start Comparison
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">AI Models</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Main</h3>
+                    <a href="/" class="nav-link active" data-route="/">
+                        <span class="nav-link-icon">🏠</span>
+                        Dashboard
+                    </a>
+                    <a href="#" class="nav-link" data-route="/summarization" onclick="router.navigate('/summarization'); return false;">
+                        <span class="nav-link-icon">📝</span>
+                        Summarization
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Future Modules</h3>
+                    <a href="#" class="nav-link disabled" onclick="showNotification('Field Extraction module coming soon!', 'info'); return false;">
+                        <span class="nav-link-icon">🔍</span>
+                        Field Extraction <span class="coming-soon">Soon</span>
+                    </a>
+                    <a href="#" class="nav-link disabled" onclick="showNotification('Document Processing module coming soon!', 'info'); return false;">
+                        <span class="nav-link-icon">📄</span>
+                        Document Processing <span class="coming-soon">Soon</span>
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <h3 class="nav-section-title">System</h3>
+                    <a href="/docs" class="nav-link" target="_blank">
+                        <span class="nav-link-icon">⚙️</span>
+                        API Docs
+                    </a>
+                    <a href="/health" class="nav-link" target="_blank">
+                        <span class="nav-link-icon">💚</span>
+                        Health Check
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Module -->
+            <div id="dashboard-module" class="module-container active">
+                <div class="dashboard">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Welcome to AI Models Comparison</h1>
+                        <p class="dashboard-subtitle">
+                            Compare multiple LLM models for summarization, extraction, and more.
+                            Version {{ app_version }}
+                        </p>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="models-count">-</div>
+                            <div class="stat-label">Available Models</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="providers-count">-</div>
+                            <div class="stat-label">Active Providers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="tests-count">-</div>
+                            <div class="stat-label">Tests Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="avg-score">-</div>
+                            <div class="stat-label">Average Score</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h2 class="quick-actions-title">Quick Actions</h2>
+                        <div class="quick-actions-grid">
+                            <a href="#" class="quick-action" data-route="/summarization" onclick="router.navigate('/summarization'); return false;">
+                                <div class="quick-action-icon">📝</div>
+                                <div class="quick-action-content">
+                                    <div class="quick-action-title">Text Summarization</div>
+                                    <div class="quick-action-description">
+                                        Compare multiple models for text summarization
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="quick-action disabled" onclick="showNotification('Field Extraction module coming soon!', 'info')">
+                                <div class="quick-action-icon">🔍</div>
+                                <div class="quick-action-content">
+                                    <div class="quick-action-title">Field Extraction</div>
+                                    <div class="quick-action-description">
+                                        Extract structured data from text (Coming Soon)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quick-action disabled" onclick="showNotification('Document Processing module coming soon!', 'info')">
+                                <div class="quick-action-icon">📄</div>
+                                <div class="quick-action-content">
+                                    <div class="quick-action-title">Document Processing</div>
+                                    <div class="quick-action-description">
+                                        Process PDF, Word, Excel files (Coming Soon)
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/api" class="quick-action" target="_blank">
+                                <div class="quick-action-icon">⚙️</div>
+                                <div class="quick-action-content">
+                                    <div class="quick-action-title">API Documentation</div>
+                                    <div class="quick-action-description">
+                                        View API endpoints and documentation
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="recent-activity">
+                                <p class="text-secondary">No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summarization Module -->
+            <div id="summarization-module" class="module-container">
+                <div class="summarization-module">
+                    <div class="summarization-header">
+                        <h1 class="summarization-title">📝 Text Summarization</h1>
+                        <p class="summarization-subtitle">Compare multiple LLM models for text summarization</p>
+                    </div>
+                    
+                    <div class="summarization-layout">
+                        <!-- Panel de configuración -->
+                        <div class="config-panel">
+                            <h2 class="config-panel-title">Configuration</h2>
+                            
+                            <!-- Selector de modelos -->
+                            <div class="config-section">
+                                <h3 class="config-section-title">Select Models</h3>
+                                
+                                <!-- Filtros y búsqueda -->
+                                <div class="model-filters">
+                                    <div class="search-box">
+                                        <input type="text" id="model-search" placeholder="Search models..." class="input">
+                                    </div>
+                                    <div class="provider-filters">
+                                        <label class="filter-label">Filter by Provider:</label>
+                                        <div class="filter-buttons">
+                                            <button class="filter-btn active" data-provider="all">All</button>
+                                            <button class="filter-btn" data-provider="openai">OpenAI</button>
+                                            <button class="filter-btn" data-provider="google">Google</button>
+                                            <button class="filter-btn" data-provider="anthropic">Anthropic</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="model-selector">
+                                    <div class="model-grid" id="model-grid">
+                                        <div class="loading-state">
+                                            <div class="spinner"></div>
+                                            <p class="loading-text">Loading models...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumen de selección -->
+                                <div class="selection-summary" id="selection-summary" style="display: none;">
+                                    <div class="summary-title">Selected Models:</div>
+                                    <div class="selected-models" id="selected-models-list"></div>
+                                </div>
+                            </div>
+
+                            <!-- Configuración LLM -->
+                            <div class="config-section">
+                                <h3 class="config-section-title">LLM Parameters</h3>
+                                <div class="llm-config">
+                                    <div class="config-field">
+                                        <label class="config-label">Temperature</label>
+                                        <input type="range" class="config-input" id="temperature" 
+                                               min="0" max="2" step="0.1" value="0.7">
+                                        <span class="config-value" id="temperature-value">0.7</span>
+                                    </div>
+                                    <div class="config-field">
+                                        <label class="config-label">Max Tokens</label>
+                                        <input type="number" class="config-input" id="max-tokens" 
+                                               min="100" max="4000" value="1000">
+                                    </div>
+                                    <div class="config-field">
+                                        <label class="config-label">Top P</label>
+                                        <input type="range" class="config-input" id="top-p" 
+                                               min="0" max="1" step="0.1" value="1.0">
+                                        <span class="config-value" id="top-p-value">1.0</span>
+                                    </div>
+                                    <div class="config-field">
+                                        <label class="config-label">Top K</label>
+                                        <input type="number" class="config-input" id="top-k" 
+                                               min="1" max="100" value="50">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configuración de resumen -->
+                            <div class="config-section">
+                                <h3 class="config-section-title">Summarization Settings</h3>
+                                <div class="config-field">
+                                    <label class="config-label">Max Words</label>
+                                    <input type="number" class="config-input" id="max-words" 
+                                           min="20" max="500" value="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Panel de entrada de texto -->
+                        <div class="text-input-section">
+                            <div class="text-input-header">
+                                <h2 class="text-input-title">Text to Summarize</h2>
+                                <div class="text-input-stats">
+                                    <span id="word-count">0 words</span>
+                                    <span id="char-count">0 characters</span>
+                                </div>
+                            </div>
+                            <textarea 
+                                class="text-input-area" 
+                                id="text-input" 
+                                placeholder="Enter the text you want to summarize..."
+                                rows="10"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Botón de comparación -->
+                    <div class="compare-section">
+                        <button class="compare-button" id="compare-button">
+                            <span class="compare-icon">🚀</span>
+                            <span class="compare-text">Compare Models</span>
+                        </button>
+                    </div>
+
+                    <!-- Sección de resultados -->
+                    <div class="results-section" id="results-section" style="display: none;">
+                        <div class="results-header">
+                            <h2 class="results-title">Comparison Results</h2>
+                            <div class="results-stats" id="results-stats">
+                                <!-- Estadísticas se cargarán dinámicamente -->
+                            </div>
+                        </div>
+                        <div class="results-grid" id="results-grid">
+                            <!-- Resultados se cargarán dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extraction Module -->
+            <div id="extraction-module" class="module-container">
+                <div class="extraction-module">
+                    <h1>🔍 Field Extraction</h1>
+                    <p>Extract structured data from text (Coming Soon)</p>
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Documents Module -->
+            <div id="documents-module" class="module-container">
+                <div class="documents-module">
+                    <h1>📄 Document Processing</h1>
+                    <p>Process PDF, Word, Excel files (Coming Soon)</p>
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loading-indicator">
+        <div class="loading-content">
+            <div class="spinner loading-spinner"></div>
+            <p class="loading-text">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Error Container -->
+    <div class="error-container" id="error-container"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/core/api.js"></script>
+    <script src="/static/js/core/state.js"></script>
+    <script src="/static/js/core/router.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
