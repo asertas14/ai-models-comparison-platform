@@ -136,39 +136,44 @@ ai-models-comparison/
 - **Consistency Score**: Consistencia entre múltiples resúmenes
 - **Execution Time**: Tiempo de ejecución por modelo
 
-## 🚀 Deployment en Vercel
+## 🚀 Deployment
 
-### 1. Preparar para Vercel
+### Desarrollo Local
 
-Crear `vercel.json`:
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "main.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "main.py"
-    }
-  ]
-}
+```bash
+# Clonar y configurar
+git clone https://github.com/tu-usuario/ai-models-comparison-platform.git
+cd ai-models-comparison-platform
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Configurar variables de entorno
+cp env.example .env
+# Editar .env con tus API keys
+
+# Ejecutar
+python main.py
 ```
 
-### 2. Variables de Entorno en Vercel
+### Deployment en Servidor
+
 ```bash
-vercel env add OPENAI_API_KEY
-vercel env add ANTHROPIC_API_KEY
-vercel env add GOOGLE_API_KEY
+# Usar gunicorn para producción
+pip install gunicorn
+gunicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-### 3. Deploy
-```bash
-vercel --prod
+### Docker (Opcional)
+
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["python", "main.py"]
 ```
 
 ## 📊 Uso de la Aplicación

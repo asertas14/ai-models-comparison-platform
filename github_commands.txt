@@ -1,0 +1,14 @@
+# Comandos para conectar con GitHub
+# (Reemplaza 'tu-usuario' con tu nombre de usuario de GitHub)
+
+# Agregar remote origin
+git remote add origin https://github.com/tu-usuario/ai-models-comparison-platform.git
+
+# Cambiar nombre de branch a main (si es necesario)
+git branch -M main
+
+# Push inicial
+git push -u origin main
+
+# Verificar que se subió correctamente
+git remote -v
